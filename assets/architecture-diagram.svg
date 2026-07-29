@@ -1,0 +1,110 @@
+<svg viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="20%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#101a33"/>
+      <stop offset="55%" stop-color="#0a0e1a"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7c4dff"/>
+      <stop offset="100%" stop-color="#00e5ff"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <style>
+      .card { fill: rgba(255,255,255,0.05); stroke: rgba(255,255,255,0.12); stroke-width: 1.5; rx: 14; }
+      .title { fill: #e8ecf5; font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 16px; }
+      .sub { fill: #8a94a8; font-family: 'Segoe UI', sans-serif; font-size: 12px; }
+      .label { fill: #00e5ff; font-family: 'Segoe UI', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; }
+      .arrow { stroke: url(#accent); stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#00e5ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="620" fill="url(#bg)"/>
+  <text x="40" y="45" class="title" font-size="24">Emotica AI — System Architecture</text>
+  <text x="40" y="68" class="sub">Webcam → Face Detection → Emotion CNN → Mood-Matched Music, with SQLite logging &amp; live analytics</text>
+
+  <!-- Row 1: Input pipeline -->
+  <rect x="40" y="110" width="220" height="110" class="card"/>
+  <text x="60" y="140" class="label">CAPTURE</text>
+  <text x="60" y="165" class="title" font-size="15">CameraStream</text>
+  <text x="60" y="185" class="sub">camera.py — threaded</text>
+  <text x="60" y="202" class="sub">cv2.VideoCapture reader</text>
+
+  <rect x="310" y="110" width="220" height="110" class="card"/>
+  <text x="330" y="140" class="label">DETECT</text>
+  <text x="330" y="165" class="title" font-size="15">FaceDetector</text>
+  <text x="330" y="185" class="sub">MediaPipe face_detection</text>
+  <text x="330" y="202" class="sub">every frame → FaceBox</text>
+
+  <rect x="580" y="110" width="220" height="110" class="card"/>
+  <text x="600" y="140" class="label">CLASSIFY</text>
+  <text x="600" y="165" class="title" font-size="15">EmotionModel</text>
+  <text x="600" y="185" class="sub">emotion_model.py (Keras)</text>
+  <text x="600" y="202" class="sub">every N frames → label + %</text>
+
+  <rect x="850" y="110" width="310" height="110" class="card"/>
+  <text x="870" y="140" class="label">RESPOND</text>
+  <text x="870" y="165" class="title" font-size="15">MusicPlayer</text>
+  <text x="870" y="185" class="sub">music_player.py (pygame.mixer)</text>
+  <text x="870" y="202" class="sub">EMOTION_MUSIC_MAP → mood folder</text>
+
+  <path class="arrow" d="M260,165 H310"/>
+  <path class="arrow" d="M530,165 H580"/>
+  <path class="arrow" d="M800,165 H850"/>
+
+  <!-- Row 2: Persistence + UI -->
+  <rect x="40" y="280" width="330" height="120" class="card"/>
+  <text x="60" y="310" class="label">PERSISTENCE</text>
+  <text x="60" y="335" class="title" font-size="15">Database (SQLite)</text>
+  <text x="60" y="356" class="sub">database.py — detections table</text>
+  <text x="60" y="374" class="sub">timestamp · emotion · confidence · song</text>
+
+  <rect x="410" y="280" width="330" height="120" class="card"/>
+  <text x="430" y="310" class="label">ANALYTICS</text>
+  <text x="430" y="335" class="title" font-size="15">Plotly Charts</text>
+  <text x="430" y="356" class="sub">analytics.py — pie / bar / timeline</text>
+  <text x="430" y="374" class="sub">live trend + top-emotion donut</text>
+
+  <rect x="780" y="280" width="380" height="120" class="card"/>
+  <text x="800" y="310" class="label">PRESENTATION</text>
+  <text x="800" y="335" class="title" font-size="15">Streamlit Multipage App</text>
+  <text x="800" y="356" class="sub">app.py + pages/ (Live · Analytics ·</text>
+  <text x="800" y="374" class="sub">Song Manager · Settings · About)</text>
+
+  <path class="arrow" d="M960,220 V280"/>
+  <path class="arrow" d="M690,220 Q690,250 570,280"/>
+  <path class="arrow" d="M205,220 Q205,250 205,280"/>
+  <path class="arrow" d="M370,340 H410"/>
+  <path class="arrow" d="M740,340 H780"/>
+
+  <!-- Row 3: Training/offline tools -->
+  <rect x="40" y="450" width="1120" height="130" class="card" fill="rgba(124,77,255,0.06)"/>
+  <text x="60" y="480" class="label">OFFLINE / TRAINING TOOLS (run outside Streamlit)</text>
+
+  <g font-family="Segoe UI, sans-serif">
+    <rect x="60" y="500" width="250" height="60" rx="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="75" y="522" fill="#ffd54f" font-size="13" font-weight="700">collect_faces.py</text>
+    <text x="75" y="542" fill="#8a94a8" font-size="11">Webcam dataset collector (4 classes)</text>
+
+    <rect x="330" y="500" width="250" height="60" rx="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="345" y="522" fill="#4fc3f7" font-size="13" font-weight="700">train_model.py</text>
+    <text x="345" y="542" fill="#8a94a8" font-size="11">FER2013 CNN from scratch</text>
+
+    <rect x="600" y="500" width="250" height="60" rx="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="615" y="522" fill="#00e676" font-size="13" font-weight="700">train_custom_model.py</text>
+    <text x="615" y="542" fill="#8a94a8" font-size="11">Light CNN on your own dataset</text>
+
+    <rect x="870" y="500" width="250" height="60" rx="10" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)"/>
+    <text x="885" y="522" fill="#ff5252" font-size="13" font-weight="700">train_transfer_model.py</text>
+    <text x="885" y="542" fill="#8a94a8" font-size="11">MobileNetV2 transfer learning</text>
+  </g>
+
+  <path class="arrow" d="M1100,450 V230 Q1100,150 1160,150" opacity="0"/>
+  <path d="M600,500 V450" stroke="url(#accent)" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.5"/>
+  <text x="1010" y="605" class="sub" text-anchor="end">All three produce → models/emotion_model.h5 (auto-detected by shape)</text>
+</svg>
